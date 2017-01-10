@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  elk:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: kireevco/elk
+    container_name: elk
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+      - "5601:5601"
+      - "1514:1514/udp"
+      - "1514:1514"
+      - "5044:5044"
+    privileged: true
+
+    # In order to pass environment variables to php, make sure to add it to .ebextensions/.config and config/php/env.conf
+    environment:
+      TEST: "false"
+    volumes:
+     - ./logs/app:/var/log/app
+     - ./logstash/:/etc/logstash

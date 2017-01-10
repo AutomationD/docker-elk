@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+function log {
+  message=$1
+
+  if [ ! -z "$2" ]
+  then
+    state=$2;
+  else
+    state="started"
+  fi
+
+  # 2016-11-23 16:36:49,898 INFO success
+  timestamp=$(date +"%Y-%m-%d %T,%3N")
+  log_level="INFO"
+
+  echo "$timestamp $log_level $state: $message"
+}

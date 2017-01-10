@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+
+source /usr/local/bin/app-env
+
+# Create Directories
+mkdir -p /var/log/app
+
+echo "Generating configs out of templates"
+j2 -f env /root/.docker/templates/crontab > /etc/crontab && \
+j2 -f env /root/.docker/templates/supervisord.conf > /etc/supervisor/supervisord.conf
+j2 -f env /root/.docker/templates/kibana.yml > /opt/kibana/config/config.yml
+
+for f in /root/.docker/templates/curator/*
+do
+ echo "Processing $f"
+ j2 -f env $f > /root/.curator/$(basename $f)
+done
+
+
+for f in /root/.docker/templates/logstash/conf.d/*
+do
+ echo "Processing $f"
+ j2 -f env $f > /etc/logstash/conf.d/$(basename $f)
+done
+
+exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
