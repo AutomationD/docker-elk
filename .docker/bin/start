@@ -7,7 +7,7 @@ source /usr/local/bin/app-env
 mkdir -p /var/log/app
 
 echo "Generating configs out of templates"
-j2 -f env /root/.docker/templates/crontab > /etc/crontab && \
+j2 -f env /root/.docker/templates/crontab > /etc/crontab
 j2 -f env /root/.docker/templates/supervisord.conf > /etc/supervisor/supervisord.conf
 j2 -f env /root/.docker/templates/kibana.yml > /opt/kibana/config/config.yml
 
